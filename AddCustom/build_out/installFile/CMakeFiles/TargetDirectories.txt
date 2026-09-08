@@ -1,0 +1,6 @@
+/home/zdm/code/Ascendc/AddCustom/AddCustom/build_out/installFile/CMakeFiles/edit_cache.dir
+/home/zdm/code/Ascendc/AddCustom/AddCustom/build_out/installFile/CMakeFiles/rebuild_cache.dir
+/home/zdm/code/Ascendc/AddCustom/AddCustom/build_out/installFile/CMakeFiles/list_install_components.dir
+/home/zdm/code/Ascendc/AddCustom/AddCustom/build_out/installFile/CMakeFiles/install.dir
+/home/zdm/code/Ascendc/AddCustom/AddCustom/build_out/installFile/CMakeFiles/install/local.dir
+/home/zdm/code/Ascendc/AddCustom/AddCustom/build_out/installFile/CMakeFiles/install/strip.dir

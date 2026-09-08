@@ -1,0 +1,5 @@
+/home/zdm/code/Ascendc/AddCustom/AddCustom/build_out/_CPack_Packages/Linux/External/custom_opp_ubuntu_x86_64.run/packages/vendors/customize/op_impl/ai_core/tbe/config/kirin9020/aic-kirin9020-ops-info.json
+/home/zdm/code/Ascendc/AddCustom/AddCustom/build_out/_CPack_Packages/Linux/External/custom_opp_ubuntu_x86_64.run/packages/vendors/customize/op_impl/ai_core/tbe/customize_impl/dynamic/add_custom.py
+/home/zdm/code/Ascendc/AddCustom/AddCustom/build_out/_CPack_Packages/Linux/External/custom_opp_ubuntu_x86_64.run/packages/vendors/customize/op_impl/ai_core/tbe/customize_impl/dynamic/add_custom.cpp
+/home/zdm/code/Ascendc/tool/DDK-tools-next-6.0.1.0/tools/tools_ascendc/../../tools/platform/kirin9020/lib64/libcustom_op.so
+/home/zdm/code/Ascendc/tool/DDK-tools-next-6.0.1.0/tools/tools_ascendc/../../tools/platform/kirin9020/ops/impl/custom/op_proto.h

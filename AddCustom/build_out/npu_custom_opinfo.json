@@ -1,0 +1,57 @@
+{
+  "AddCustom": {
+    "input0": {
+      "name": "x",
+      "dtype": "float16",
+      "format": "ND",
+      "shape": "all",
+      "paramType": "required"
+    },
+    "input1": {
+      "name": "y",
+      "dtype": "float16",
+      "format": "ND",
+      "shape": "all",
+      "paramType": "required"
+    },
+    "output0": {
+      "name": "z",
+      "dtype": "float16",
+      "format": "ND",
+      "shape": "all",
+      "paramType": "required"
+    },
+    "attr": {
+      "list": "bias"
+    },
+    "attr_bias": {
+      "type": "int",
+      "value": "all",
+      "paramType": "required"
+    },
+    "dynamicCompileStatic": {
+      "flag": "true"
+    },
+    "dynamicFormat": {
+      "flag": "false"
+    },
+    "dynamicRankSupport": {
+      "flag": "true"
+    },
+    "dynamicShapeSupport": {
+      "flag": "true"
+    },
+    "needCheckSupport": {
+      "flag": "false"
+    },
+    "precision_reduce": {
+      "flag": "true"
+    },
+    "opFile": {
+      "value": "add_custom"
+    },
+    "opInterface": {
+      "value": "add_custom"
+    }
+  }
+}

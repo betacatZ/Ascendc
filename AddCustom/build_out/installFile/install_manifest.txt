@@ -1,0 +1,4 @@
+/home/zdm/code/Ascendc/tool/DDK-tools-next-6.0.1.0/tools/tools_ascendc/../../tools/platform/kirin9020/ops/impl/custom/add_custom.py
+/home/zdm/code/Ascendc/tool/DDK-tools-next-6.0.1.0/tools/tools_ascendc/../../tools/platform/kirin9020/ops/impl/custom/add_custom.cpp
+/home/zdm/code/Ascendc/tool/DDK-tools-next-6.0.1.0/tools/tools_ascendc/../../tools/platform/kirin9020/config/npu_custom_opinfo.json
+/home/zdm/code/Ascendc/tool/DDK-tools-next-6.0.1.0/tools/tools_ascendc/../../tools/platform/kirin9020/config/aic-kirin9020-ops-info.json
