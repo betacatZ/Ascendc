@@ -15,11 +15,18 @@ rights reserved.
 #include "add_custom_tiling.h"
 #include "register/op_def_registry.h"
 #include "tiling/platform/platform_ascendc.h"
+#include "hilog/log.h"
+
+#undef LOG_DOMAIN
+#undef LOG_TAG
+#define LOG_DOMAIN 0xD001100
+#define LOG_TAG "AddCustom"
 
 
 namespace optiling {
 static ge::graphStatus TilingFunc(gert::TilingContext* context)
 {
+    OH_LOG_INFO(LOG_APP, "[STAGE-3: Runtime Inference] Host::TilingFunc called");
 
     AddCustomTilingData tiling;
     const gert::StorageShape* x1_shape = context->GetInputShape(0);
@@ -48,6 +55,7 @@ static ge::graphStatus TilingFunc(gert::TilingContext* context)
 namespace ge {
 static ge::graphStatus InferShape(gert::InferShapeContext* context)
 {
+    OH_LOG_INFO(LOG_APP, "[STAGE-2: Model Load] Host::InferShape called");
     const gert::Shape* x1_shape = context->GetInputShape(0);
     gert::Shape* y_shape = context->GetOutputShape(0);
     *y_shape = *x1_shape;
@@ -55,6 +63,7 @@ static ge::graphStatus InferShape(gert::InferShapeContext* context)
 }
 static ge::graphStatus InferDataType(gert::InferDataTypeContext* context)
 {
+    OH_LOG_INFO(LOG_APP, "[STAGE-2: Model Load] Host::InferDataType called");
     context->SetOutputDataType(0, context->GetInputDataType(0));
     return GRAPH_SUCCESS;
 }
@@ -66,6 +75,7 @@ class AddCustom : public OpDef {
 public:
     explicit AddCustom(const char* name) : OpDef(name)
     {
+        printf("[STAGE-2: Model Load] Host::AddCustom OpDef constructor called\n");
         this->Input("x")
             .ParamType(REQUIRED)
             .DataType({ge::DT_FLOAT16})
