@@ -38,18 +38,26 @@ endif()
 
 add_executable(add-custom-runner src/add_custom_runner.cpp)
 
-# 获取 SDK 的 C++ 头文件路径
-get_filename_component(OHOS_CXX_INCLUDE "${CMAKE_CXX_COMPILER}" DIRECTORY)
-get_filename_component(OHOS_CXX_INCLUDE "${OHOS_CXX_INCLUDE}" DIRECTORY)
-set(OHOS_CXX_INCLUDE "${OHOS_CXX_INCLUDE}/include/libcxx-ohos/include/c++/v1")
+# 强制使用 SDK 的 C++ 头文件
+get_filename_component(LLVM_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
+get_filename_component(LLVM_DIR "${LLVM_DIR}" DIRECTORY)
+set(OHOS_CXX_INCLUDE "${LLVM_DIR}/include/libcxx-ohos/include/c++/v1")
+set(OHOS_SYSROOT "${CMAKE_SYSROOT}")
 
 target_include_directories(add-custom-runner SYSTEM BEFORE PRIVATE
     "${OHOS_CXX_INCLUDE}"
+    "${OHOS_SYSROOT}/usr/include"
+    "${OHOS_SYSROOT}/usr/include/aarch64-linux-ohos"
     "${HIAI_MODEL_MANAGER_INCLUDE}")
+
 target_compile_options(add-custom-runner PRIVATE
     -Wall -Wextra -Wpedantic
     -nostdinc++
-    -D_LIBCPP_HAS_NO_PRAGMA_SYSTEM_HEADER)
+    -nostdinc
+    -isystem "${OHOS_CXX_INCLUDE}"
+    -isystem "${OHOS_SYSROOT}/usr/include"
+    -isystem "${OHOS_SYSROOT}/usr/include/aarch64-linux-ohos")
+
 target_link_libraries(add-custom-runner PRIVATE "${HIAI_PLATFORM_LIB}")
 target_link_options(add-custom-runner PRIVATE
     -Wl,--allow-shlib-undefined
