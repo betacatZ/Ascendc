@@ -14,9 +14,17 @@ rights reserved.
 
 
 #include "kernel_operator.h"
+#include "lib/hilog.h"
+
 using namespace AscendC;
 constexpr int32_t BUFFER_NUM = 2;
 constexpr int32_t TILE_NUM = 8;
+
+// 定义 hilog domain 和 tag
+#undef LOG_DOMAIN
+#undef LOG_TAG
+#define LOG_DOMAIN 0xD001100
+#define LOG_TAG "AddCustomKernel"
 
 class KernelAdd {
 public:
@@ -26,6 +34,11 @@ public:
         this->blockLength = totalLength / AscendC::GetBlockNum();
         this->tileNum = tileNum;
         this->tileLength = this->blockLength / tileNum / BUFFER_NUM;
+
+        // 使用 hilog 打印
+        OH_LOG_INFO(LOG_APP, "[op_kernel::KernelAdd::Init] BlockIdx=%d, BlockNum=%d", AscendC::GetBlockIdx(), AscendC::GetBlockNum());
+        OH_LOG_INFO(LOG_APP, "[op_kernel::KernelAdd::Init] totalLength=%u, blockLength=%u", totalLength, this->blockLength);
+        OH_LOG_INFO(LOG_APP, "[op_kernel::KernelAdd::Init] tileNum=%u, tileLength=%u", this->tileNum, this->tileLength);
 
         xGm.SetGlobalBuffer((__gm__ DTYPE_X *)x + this->blockLength * AscendC::GetBlockIdx(), this->blockLength);
         yGm.SetGlobalBuffer((__gm__ DTYPE_Y *)y + this->blockLength * AscendC::GetBlockIdx(), this->blockLength);
@@ -37,11 +50,13 @@ public:
     __aicore__ inline void Process()
     {
         int32_t loopCount = this->tileNum * BUFFER_NUM;
+        OH_LOG_INFO(LOG_APP, "[op_kernel::KernelAdd::Process] Starting, loopCount=%d", loopCount);
         for (int32_t i = 0; i < loopCount; i++) {
             CopyIn(i);
             Compute(i);
             CopyOut(i);
         }
+        OH_LOG_INFO(LOG_APP, "[op_kernel::KernelAdd::Process] Completed");
     }
 
 private:
@@ -59,6 +74,9 @@ private:
         AscendC::LocalTensor<DTYPE_X> xLocal = inQueueX.DeQue<DTYPE_X>();
         AscendC::LocalTensor<DTYPE_Y> yLocal = inQueueY.DeQue<DTYPE_Y>();
         AscendC::LocalTensor<DTYPE_Z> zLocal = outQueueZ.AllocTensor<DTYPE_Z>();
+
+        OH_LOG_DEBUG(LOG_APP, "[op_kernel::KernelAdd::Compute] Iteration %d, tileLength=%u", progress, this->tileLength);
+
         AscendC::Add(zLocal, xLocal, yLocal, this->tileLength);
         DumpTensor(xLocal, 0, 32);
         DumpTensor(yLocal, 1, 32);
@@ -90,8 +108,17 @@ extern "C" __global__ __aicore__ void add_custom(GM_ADDR x, GM_ADDR y, GM_ADDR z
                                                  GM_ADDR workspace, GM_ADDR tiling)
 {
     GET_TILING_DATA(tiling_data, tiling);
-    printf("bias is %d.\n", tiling_data.bias);
+
+    OH_LOG_INFO(LOG_APP, "========================================");
+    OH_LOG_INFO(LOG_APP, "[op_kernel::add_custom] Kernel started");
+    OH_LOG_INFO(LOG_APP, "[op_kernel::add_custom] bias=%d, size=%u", tiling_data.bias, tiling_data.size);
+    OH_LOG_INFO(LOG_APP, "========================================");
+
     KernelAdd op;
     op.Init(x, y, z, tiling_data.size, TILE_NUM);
     op.Process();
+
+    OH_LOG_INFO(LOG_APP, "========================================");
+    OH_LOG_INFO(LOG_APP, "[op_kernel::add_custom] Kernel completed successfully");
+    OH_LOG_INFO(LOG_APP, "========================================");
 }
