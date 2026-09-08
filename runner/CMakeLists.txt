@@ -37,8 +37,11 @@ if(NOT HIAI_PLATFORM_LIB)
 endif()
 
 add_executable(add-custom-runner src/add_custom_runner.cpp)
-target_include_directories(add-custom-runner PRIVATE "${HIAI_MODEL_MANAGER_INCLUDE}")
-target_compile_options(add-custom-runner PRIVATE -Wall -Wextra -Wpedantic)
+target_include_directories(add-custom-runner SYSTEM PRIVATE "${HIAI_MODEL_MANAGER_INCLUDE}")
+target_compile_options(add-custom-runner PRIVATE
+    -Wall -Wextra -Wpedantic
+    -nostdinc++
+    --sysroot=${CMAKE_SYSROOT})
 target_link_libraries(add-custom-runner PRIVATE "${HIAI_PLATFORM_LIB}")
 target_link_options(add-custom-runner PRIVATE
     -Wl,--allow-shlib-undefined
