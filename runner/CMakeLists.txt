@@ -38,22 +38,16 @@ endif()
 
 add_executable(add-custom-runner src/add_custom_runner.cpp)
 
-# 强制使用 SDK 的 C++ 头文件，避免混用系统头文件
-get_filename_component(LLVM_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
-get_filename_component(LLVM_DIR "${LLVM_DIR}" DIRECTORY)
-set(OHOS_CXX_INCLUDE "${LLVM_DIR}/include/libcxx-ohos/include/c++/v1")
-set(OHOS_SYSROOT "${CMAKE_SYSROOT}")
-
-target_include_directories(add-custom-runner SYSTEM BEFORE PRIVATE
-    "${OHOS_CXX_INCLUDE}"
-    "${HIAI_MODEL_MANAGER_INCLUDE}")
+# 使用 SDK 的完整工具链配置
+target_include_directories(add-custom-runner PRIVATE "${HIAI_MODEL_MANAGER_INCLUDE}")
 
 target_compile_options(add-custom-runner PRIVATE
     -Wall -Wextra -Wpedantic
+    --no-standard-includes
     -nostdinc++
-    -isystem "${OHOS_CXX_INCLUDE}"
-    -isystem "${OHOS_SYSROOT}/usr/include"
-    -isystem "${OHOS_SYSROOT}/usr/include/aarch64-linux-ohos")
+    -isystem "${CMAKE_SYSROOT}/usr/include/c++/v1"
+    -isystem "${CMAKE_SYSROOT}/usr/include"
+    -isystem "${CMAKE_SYSROOT}/usr/include/aarch64-linux-ohos")
 
 target_link_libraries(add-custom-runner PRIVATE "${HIAI_PLATFORM_LIB}")
 target_link_options(add-custom-runner PRIVATE
