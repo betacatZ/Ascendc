@@ -37,18 +37,8 @@ if(NOT HIAI_PLATFORM_LIB)
 endif()
 
 add_executable(add-custom-runner src/add_custom_runner.cpp)
-
-# 使用 SDK 的完整工具链配置
 target_include_directories(add-custom-runner PRIVATE "${HIAI_MODEL_MANAGER_INCLUDE}")
-
-target_compile_options(add-custom-runner PRIVATE
-    -Wall -Wextra -Wpedantic
-    --no-standard-includes
-    -nostdinc++
-    -isystem "${CMAKE_SYSROOT}/usr/include/c++/v1"
-    -isystem "${CMAKE_SYSROOT}/usr/include"
-    -isystem "${CMAKE_SYSROOT}/usr/include/aarch64-linux-ohos")
-
+target_compile_options(add-custom-runner PRIVATE -Wall -Wextra -Wpedantic)
 target_link_libraries(add-custom-runner PRIVATE "${HIAI_PLATFORM_LIB}")
 target_link_options(add-custom-runner PRIVATE
     -Wl,--allow-shlib-undefined
