@@ -11,22 +11,16 @@ rights reserved.
  * Apache License for more details at
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-
+#include <cstdio>
 #include "add_custom_tiling.h"
 #include "register/op_def_registry.h"
 #include "tiling/platform/platform_ascendc.h"
-#include "hilog/log.h"
-
-#undef LOG_DOMAIN
-#undef LOG_TAG
-#define LOG_DOMAIN 0xD001100
-#define LOG_TAG "AddCustom"
 
 
 namespace optiling {
 static ge::graphStatus TilingFunc(gert::TilingContext* context)
 {
-    OH_LOG_INFO(LOG_APP, "[STAGE-3: Runtime Inference] Host::TilingFunc called");
+    printf("[STAGE-3: Runtime Inference] Host::TilingFunc called\n");
 
     AddCustomTilingData tiling;
     const gert::StorageShape* x1_shape = context->GetInputShape(0);
@@ -55,7 +49,7 @@ static ge::graphStatus TilingFunc(gert::TilingContext* context)
 namespace ge {
 static ge::graphStatus InferShape(gert::InferShapeContext* context)
 {
-    OH_LOG_INFO(LOG_APP, "[STAGE-2: Model Load] Host::InferShape called");
+    printf("[STAGE-2: Model Load] Host::InferShape called\n");
     const gert::Shape* x1_shape = context->GetInputShape(0);
     gert::Shape* y_shape = context->GetOutputShape(0);
     *y_shape = *x1_shape;
@@ -63,7 +57,7 @@ static ge::graphStatus InferShape(gert::InferShapeContext* context)
 }
 static ge::graphStatus InferDataType(gert::InferDataTypeContext* context)
 {
-    OH_LOG_INFO(LOG_APP, "[STAGE-2: Model Load] Host::InferDataType called");
+    printf("[STAGE-2: Model Load] Host::InferDataType called\n");
     context->SetOutputDataType(0, context->GetInputDataType(0));
     return GRAPH_SUCCESS;
 }
